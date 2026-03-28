@@ -30,10 +30,23 @@ func main() {
         os.Exit(1)
     }
 
-    memCache := cache.NewMemoryCache()
+    // Выбираем тип кэша
+    var cacheInstance cache.Cache
+    switch cfg.CacheType {
+    case "memory":
+        cacheInstance = cache.NewMemoryCache()
+        log.Info("Используется кэш в памяти")
+    case "redis":
+        cacheInstance = cache.NewRedisCache(cfg.RedisAddr)
+        log.Info("Используется Redis кэш на " + cfg.RedisAddr)
+    default:
+        log.Error("Неизвестный тип кэша", nil)
+        os.Exit(1)
+    }
+
     cacheTTL := 5 * time.Minute
 
-    app := cli.New(log, store, memCache, cacheTTL)
+    app := cli.New(log, store, cacheInstance, cacheTTL)
 
     if len(os.Args) > 2 && os.Args[1] == "save" {
         var lat, lon float64
