@@ -1,0 +1,6 @@
+{
+    "storage_type": "file",
+    "file_path": "./location.json",
+    "default_lat": 53.6688,
+    "default_lon": 23.8223
+}
