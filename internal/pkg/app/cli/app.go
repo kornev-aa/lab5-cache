@@ -2,8 +2,10 @@ package cli
 
 import (
     "fmt"
-    "github.com/kornev-aa/lab5/internal/pkg/weather"
-    "github.com/kornev-aa/lab5/pkg/storage"
+    "time"
+    "github.com/kornev-aa/lab5-cache/internal/pkg/weather"
+    "github.com/kornev-aa/lab5-cache/pkg/cache"
+    "github.com/kornev-aa/lab5-cache/pkg/storage"
 )
 
 type Logger interface {
@@ -18,11 +20,11 @@ type cliApp struct {
     weather *weather.WeatherService
 }
 
-func New(log Logger, storage storage.LocationStorage) *cliApp {
+func New(log Logger, storage storage.LocationStorage, cache cache.Cache, cacheTTL time.Duration) *cliApp {
     return &cliApp{
         log:     log,
         storage: storage,
-        weather: weather.NewWeatherService(),
+        weather: weather.NewWeatherService(cache, cacheTTL),
     }
 }
 

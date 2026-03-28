@@ -1,4 +1,4 @@
-module github.com/kornev-aa/lab5
+module github.com/kornev-aa/lab5-cache
 
 go 1.25.0
 

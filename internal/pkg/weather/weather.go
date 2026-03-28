@@ -6,6 +6,8 @@ import (
     "fmt"
     "io"
     "net/http"
+    "time"
+    "github.com/kornev-aa/lab5-cache/pkg/cache"
 )
 
 type CurrentWeather struct {
@@ -18,15 +20,28 @@ type WeatherResponse struct {
 
 type WeatherService struct {
     httpClient *http.Client
+    cache      cache.Cache
+    cacheTTL   time.Duration
 }
 
-func NewWeatherService() *WeatherService {
+func NewWeatherService(cache cache.Cache, cacheTTL time.Duration) *WeatherService {
     return &WeatherService{
         httpClient: &http.Client{},
+        cache:      cache,
+        cacheTTL:   cacheTTL,
     }
 }
 
 func (s *WeatherService) GetWeather(lat, lon float64) (*WeatherResponse, error) {
+    cacheKey := fmt.Sprintf("weather:%.4f:%.4f", lat, lon)
+
+    if cached, found := s.cache.Get(cacheKey); found {
+        var result WeatherResponse
+        if err := json.Unmarshal(cached, &result); err == nil {
+            return &result, nil
+        }
+    }
+
     params := fmt.Sprintf(
         "latitude=%f&longitude=%f&current=temperature_2m",
         lat, lon,
@@ -48,6 +63,8 @@ func (s *WeatherService) GetWeather(lat, lon float64) (*WeatherResponse, error) 
     if err := json.Unmarshal(data, &result); err != nil {
         return nil, errors.Join(errors.New("failed to parse response"), err)
     }
+
+    s.cache.Set(cacheKey, data, s.cacheTTL)
 
     return &result, nil
 }

@@ -3,10 +3,12 @@ package main
 import (
     "fmt"
     "os"
-    "github.com/kornev-aa/lab5/internal/pkg/app/cli"
-    "github.com/kornev-aa/lab5/pkg/config"
-    "github.com/kornev-aa/lab5/pkg/logger"
-    "github.com/kornev-aa/lab5/pkg/storage"
+    "time"
+    "github.com/kornev-aa/lab5-cache/internal/pkg/app/cli"
+    "github.com/kornev-aa/lab5-cache/pkg/cache"
+    "github.com/kornev-aa/lab5-cache/pkg/config"
+    "github.com/kornev-aa/lab5-cache/pkg/logger"
+    "github.com/kornev-aa/lab5-cache/pkg/storage"
 )
 
 func main() {
@@ -28,7 +30,10 @@ func main() {
         os.Exit(1)
     }
 
-    app := cli.New(log, store)
+    memCache := cache.NewMemoryCache()
+    cacheTTL := 5 * time.Minute
+
+    app := cli.New(log, store, memCache, cacheTTL)
 
     if len(os.Args) > 2 && os.Args[1] == "save" {
         var lat, lon float64

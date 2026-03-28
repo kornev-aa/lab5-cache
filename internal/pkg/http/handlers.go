@@ -4,9 +4,9 @@ import (
     "encoding/json"
     "net/http"
     "strconv"
-    "github.com/kornev-aa/lab5/internal/pkg/weather"
-    "github.com/kornev-aa/lab5/pkg/logger"
-    "github.com/kornev-aa/lab5/pkg/storage"
+    "github.com/kornev-aa/lab5-cache/internal/pkg/weather"
+    "github.com/kornev-aa/lab5-cache/pkg/logger"
+    "github.com/kornev-aa/lab5-cache/pkg/storage"
 )
 
 type Handlers struct {

@@ -7,10 +7,10 @@ import (
 
     "github.com/go-chi/chi/v5"
     "github.com/go-chi/chi/v5/middleware"
-    httphandlers "github.com/kornev-aa/lab5/internal/pkg/http"  // ← переименовали
-    "github.com/kornev-aa/lab5/pkg/config"
-    "github.com/kornev-aa/lab5/pkg/logger"
-    "github.com/kornev-aa/lab5/pkg/storage"
+    httphandlers "github.com/kornev-aa/lab5-cache/internal/pkg/http"  // ← переименовали
+    "github.com/kornev-aa/lab5-cache/pkg/config"
+    "github.com/kornev-aa/lab5-cache/pkg/logger"
+    "github.com/kornev-aa/lab5-cache/pkg/storage"
 )
 
 func main() {
